@@ -1,0 +1,15 @@
+{
+  "name": "ppo-backend",
+  "version": "1.0.0",
+  "description": "Projeto backend para o PPO",
+  "main": "index.js",
+  "author": "Gabriel Bianchessi",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.1"
+  }
+}
