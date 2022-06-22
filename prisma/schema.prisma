@@ -7,19 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Pessoa {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  nome      String    @db.VarChar(255)
-  email     String    @db.VarChar(255)
-  senha     String    @db.VarChar(255)
-  role      Role      @default(USER)
-  convites  Convite[]
-}
-
 model Tipo {
-  id         Int          @id @default(autoincrement())
+  id         String       @id
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   nome       String       @db.VarChar(255)
@@ -28,7 +17,7 @@ model Tipo {
 }
 
 model Evento {
-  id         Int          @id @default(autoincrement())
+  id         String       @id
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   nome       String       @db.VarChar(255)
@@ -40,11 +29,11 @@ model Evento {
 
 model Convite {
   id             Int     @id @default(autoincrement())
-  pessoaId       Int
-  eventoId       Int
+  pessoaId       String
+  eventoId       String
   confimPresenca Boolean
   evento         Evento  @relation(fields: [eventoId], references: [id])
-  pessoa         Pessoa  @relation(fields: [pessoaId], references: [id])
+  Pessoa         Pessoa  @relation(fields: [pessoaId], references: [id])
 
   @@index([eventoId], map: "Convite_eventoId_fkey")
   @@index([pessoaId], map: "Convite_pessoaId_fkey")
@@ -52,8 +41,8 @@ model Convite {
 
 model TipoEvento {
   id       Int    @id @default(autoincrement())
-  eventoId Int
-  tipoId   Int
+  eventoId String
+  tipoId   String
   evento   Evento @relation(fields: [eventoId], references: [id])
   tipo     Tipo   @relation(fields: [tipoId], references: [id])
 
@@ -61,7 +50,18 @@ model TipoEvento {
   @@index([tipoId], map: "TipoEvento_tipoId_fkey")
 }
 
-enum Role {
+model Pessoa {
+  id        String      @id
+  createdAt DateTime    @default(now())
+  updatedAt DateTime
+  nome      String      @db.VarChar(255)
+  email     String      @db.VarChar(255)
+  senha     String      @db.VarChar(255)
+  role      Pessoa_role @default(USER)
+  Convite   Convite[]
+}
+
+enum Pessoa_role {
   USER
   ADMIN
 }
