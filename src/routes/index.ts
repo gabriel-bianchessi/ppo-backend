@@ -1,5 +1,8 @@
 import { Router } from "express";
+import routesPessoa from "./pessoa.routes" 
 
-const router = Router()
+const routes = Router()
 
-export { router }
+routes.use("/pessoa", routesPessoa)
+
+export { routes }
