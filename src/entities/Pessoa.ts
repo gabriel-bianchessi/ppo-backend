@@ -1,7 +1,7 @@
 import { prisma, PrismaClient } from "@prisma/client"
 const prismaClient = new PrismaClient() 
 
-const pessoa = {
+const pessoaModel = {
   findById(id: string) {
     try {
       let userData = prismaClient.pessoa.findUnique({
@@ -31,4 +31,4 @@ const pessoa = {
   }
 }
 
-export default pessoa
+export default pessoaModel

@@ -1,9 +1,13 @@
-export class PessoaContorller {
-  index(): string {
-    return "Controller de todas as pessoas pessoa"
-  }
+import { request as req, response as res } from "express"
 
-  get():string {
+const pessoaController = {
+  index(){
+    
+  },
+
+  get() {
     return "Método para pegar uma unica pessoa"
   }
 }
+
+export default pessoaController
