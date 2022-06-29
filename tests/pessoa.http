@@ -1,2 +1,16 @@
 ###
-GET http://localhost:8080/
+GET http://localhost:8080/pessoa HTTP/1.1
+
+### Get para uma única pessoa
+GET http://localhost:8080/pessoa?id=543131312 HTTP/1.1
+
+### 
+POST http://localhost:8080/pessoa HTTP/1.1
+content-type: application/json
+
+{
+  "nome": "Testovaldo Batista",
+  "email": "teste@teste.com",
+  "senha": 4321,
+  "tipo": "Comunidade"
+}

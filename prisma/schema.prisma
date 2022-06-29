@@ -8,12 +8,14 @@ datasource db {
 }
 
 model Tipo {
-  id         String       @id
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  nome       String       @db.VarChar(255)
-  descricao  String       @db.Text
-  TipoEvento TipoEvento[]
+  id           String       @id
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  nome         String       @db.VarChar(255)
+  descricao    String       @db.Text
+  TipoEvento   TipoEvento[]
+  TipePessoa   TipePessoa?  @relation(fields: [tipePessoaId], references: [id])
+  tipePessoaId String?
 }
 
 model Evento {
@@ -34,9 +36,6 @@ model Convite {
   confimPresenca Boolean
   evento         Evento  @relation(fields: [eventoId], references: [id])
   Pessoa         Pessoa  @relation(fields: [pessoaId], references: [id])
-
-  @@index([eventoId], map: "Convite_eventoId_fkey")
-  @@index([pessoaId], map: "Convite_pessoaId_fkey")
 }
 
 model TipoEvento {
@@ -45,20 +44,27 @@ model TipoEvento {
   tipoId   String
   evento   Evento @relation(fields: [eventoId], references: [id])
   tipo     Tipo   @relation(fields: [tipoId], references: [id])
-
-  @@index([eventoId], map: "TipoEvento_eventoId_fkey")
-  @@index([tipoId], map: "TipoEvento_tipoId_fkey")
 }
 
 model Pessoa {
-  id        String      @id
-  createdAt DateTime    @default(now())
-  updatedAt DateTime
-  nome      String      @db.VarChar(255)
-  email     String      @db.VarChar(255)
-  senha     String      @db.VarChar(255)
-  role      Pessoa_role @default(USER)
-  Convite   Convite[]
+  id         String       @id
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime?
+  nome       String       @db.VarChar(255)
+  email      String       @db.VarChar(255)
+  senha      String       @db.VarChar(255)
+  role       Pessoa_role  @default(USER)
+  Convite    Convite[]
+  TipePessoa TipePessoa[]
+}
+
+model TipePessoa {
+  id        String    @id
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+  pesso     Pessoa    @relation(fields: [pessoaId], references: [id])
+  pessoaId  String
+  tipo      Tipo[]
 }
 
 enum Pessoa_role {
