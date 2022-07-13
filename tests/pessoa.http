@@ -2,15 +2,26 @@
 GET http://localhost:8080/pessoa HTTP/1.1
 
 ### Get para uma única pessoa
-GET http://localhost:8080/pessoa?id=543131312 HTTP/1.1
+GET http://localhost:8080/pessoa/80eda5ac-9907-487e-9891-e4b956d1d599 HTTP/1.1
 
 ### 
 POST http://localhost:8080/pessoa HTTP/1.1
 content-type: application/json
 
 {
-  "nome": "Testovaldo Batista",
-  "email": "teste@teste.com",
-  "senha": 4321,
+  "nome": "Testovaldo Junior",
+  "email": "testudo@teste.com",
+  "senha": 1234,
+  "tipo": "Comunidade"
+}
+
+###
+PUT http://localhost:8080/pessoa/80eda5ac-9907-487e-9891-e4b956d1d599 HTTP/1.1
+content-type: application/json
+
+{
+  "nome": "Testovaldo Jr",
+  "email": "testudo@teste.com",
+  "senha": 1234,
   "tipo": "Comunidade"
 }

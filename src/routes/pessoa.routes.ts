@@ -4,6 +4,7 @@ import pessoaController from '../controllers/pessoa.controller'
 const routes = Router()
 
 routes.get('/', pessoaController.index)
-routes.post('/', pessoaController.post)
+routes.get('/:id', pessoaController.get)
+routes.put('/:id', pessoaController.update)
 
 export default routes

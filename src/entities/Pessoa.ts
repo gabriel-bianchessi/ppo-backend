@@ -1,10 +1,10 @@
 import { Pessoa, Prisma, PrismaClient } from "@prisma/client"
-const prisma = new PrismaClient() 
+const { pessoa } = new PrismaClient() 
 
 const pessoaModel = {
   async findById(id: string) {
     try {
-      let userData = await prisma.pessoa.findUnique({
+      let userData = await pessoa.findUnique({
         where: {
           id: id
         },
@@ -18,7 +18,7 @@ const pessoaModel = {
 
   async findByEmail(email:string) {
     try {
-      let userData = await prisma.pessoa.findFirst({
+      let userData = await pessoa.findFirst({
         where: {
           email: email
         },
@@ -32,8 +32,16 @@ const pessoaModel = {
   
   async findAll() {
     try {
-      const users = await prisma.pessoa.findMany()
-      console.log(users)
+      const users = await pessoa.findMany({
+        select: {
+          id: true,
+          email: true,
+          nome: true,
+          role: true,
+          createdAt: true,
+          updatedAt: true,
+        }
+      })
       return users
     } catch (err) {
       console.error(err)
@@ -41,16 +49,34 @@ const pessoaModel = {
 
   },
 
-  async create(pessoa: Pessoa) {
+  async create(pessoaParam: Pessoa) {
     try {
-      const userToCreate: Pessoa = pessoa
-      const result = await prisma.pessoa.create({
+      const userToCreate: Pessoa = pessoaParam
+      
+      const result = await pessoa.create({
         data: {
           ...userToCreate
         }
       })
 
       return result
+    } catch (err) {
+      
+    }
+  },
+
+  async update(pessoaParam: Pessoa) {
+    try {
+      const pessoaToUpdate: Pessoa = pessoaParam
+
+      const result = await pessoa.update({ 
+        data: {
+          ...pessoaToUpdate
+        },
+        where: {
+          id: pessoaParam.id
+        }
+      })
     } catch (err) {
       
     }
