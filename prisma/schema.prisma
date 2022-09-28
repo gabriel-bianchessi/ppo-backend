@@ -3,71 +3,73 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Tipo {
-  id           String       @id
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  nome         String       @db.VarChar(255)
-  descricao    String       @db.Text
-  TipoEvento   TipoEvento[]
-  TipePessoa   TipePessoa?  @relation(fields: [tipePessoaId], references: [id])
-  tipePessoaId String?
+model User {
+  id              String         @id @default(uuid())
+  name            String
+  isAdmin         Boolean        @default(false)
+  birthDate       DateTime
+  email           String
+  emailIsVerified Boolean?       @default(false)
+  password        String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime?
+  visible         Boolean        @default(true)
+  Subscription    Subscription[]
+  groups          Group[]
 }
 
-model Evento {
-  id         String       @id
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  nome       String       @db.VarChar(255)
-  descricao  String       @db.Text
-  dataHora   DateTime     @db.DateTime(0)
-  convites   Convite[]
-  TipoEvento TipoEvento[]
+model Event {
+  id           String         @id @default(uuid())
+  title        String
+  description  String
+  startsAt     DateTime
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime?
+  visible      Boolean        @default(true)
+  Subscription Subscription[]
+  type         EventType[]
+  subEventOf   Event?         @relation("EventsAndSubevents", fields: [eventId], references: [id])
+  eventId      String
+  Event        Event[]        @relation("EventsAndSubevents")
 }
 
-model Convite {
-  id             Int     @id @default(autoincrement())
-  pessoaId       String
-  eventoId       String
-  confimPresenca Boolean
-  evento         Evento  @relation(fields: [eventoId], references: [id])
-  Pessoa         Pessoa  @relation(fields: [pessoaId], references: [id])
+model Subscription {
+  id            String    @id @default(uuid())
+  userConfirmed Boolean   @default(true)
+  userWent      Boolean
+  visible       Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime?
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+  event         Event     @relation(fields: [eventId], references: [id])
+  eventId       String
 }
 
-model TipoEvento {
-  id       Int    @id @default(autoincrement())
-  eventoId String
-  tipoId   String
-  evento   Evento @relation(fields: [eventoId], references: [id])
-  tipo     Tipo   @relation(fields: [tipoId], references: [id])
+model EventType {
+  id                String    @id @default(uuid())
+  title             String
+  uncaptalizedTitle String
+  description       String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime?
+  visible           Boolean   @default(true)
+  Event             Event?    @relation(fields: [eventId], references: [id])
+  eventId           String?
 }
 
-model Pessoa {
-  id         String       @id
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime?
-  nome       String       @db.VarChar(255)
-  email      String       @db.VarChar(255)
-  senha      String       @db.VarChar(255)
-  role       Pessoa_role  @default(USER)
-  Convite    Convite[]
-  TipePessoa TipePessoa[]
-}
-
-model TipePessoa {
-  id        String    @id
-  createdAt DateTime  @default(now())
-  updatedAt DateTime?
-  pesso     Pessoa    @relation(fields: [pessoaId], references: [id])
-  pessoaId  String
-  tipo      Tipo[]
-}
-
-enum Pessoa_role {
-  USER
-  ADMIN
+model Group {
+  id                 String    @id @default(uuid())
+  title              String
+  uncapitalizedTitle String    @unique
+  description        String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime?
+  visible            Boolean   @default(true)
+  User               User?     @relation(fields: [userId], references: [id])
+  userId             String?
 }

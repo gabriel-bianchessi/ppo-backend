@@ -6,7 +6,7 @@
   "author": "Gabriel Bianchessi",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --watch 'src/' --exec 'ts-node src/index.ts' -e ts",
+    "dev": "nodemon --watch 'src/' --exec ts-node src/index.ts -e ts",
     "build": "tsc"
   },
   "devDependencies": {
