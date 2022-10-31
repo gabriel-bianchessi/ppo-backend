@@ -9,7 +9,6 @@ type UserProps = {
   birthDate: Date,
   password: string
   group: string,
-  token: string
 }
 
 export default async function saveUser(props: UserProps): Promise<User> {
@@ -21,7 +20,6 @@ export default async function saveUser(props: UserProps): Promise<User> {
       email: props.email,
       birthDate: props.birthDate,
       password: props.password,
-      token: props.token,
       groups: {
         connectOrCreate: {
           where: {

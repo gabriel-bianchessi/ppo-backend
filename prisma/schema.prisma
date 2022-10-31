@@ -15,7 +15,6 @@ model User {
   email           String         @unique
   emailIsVerified Boolean?       @default(false)
   password        String
-  token           String
   createdAt       DateTime       @default(now())
   updatedAt       DateTime?
   visible         Boolean        @default(true)
